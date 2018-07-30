@@ -7,6 +7,7 @@ if !exists('g:fileselector_extra_dirs')
     let g:fileselector_extra_dirs=''
 endif
 
+let s:relativeifier = "tr '\\n' '\\0' | xargs -0 realpath"
 let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
 
 let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | " . s:existence_check
@@ -20,7 +21,6 @@ else
     let s:source_find_postfix = ' -type f'
 endif
 
-let s:relativeifier = "tr '\n' '\\0' | xargs -0 realpath"
 if g:fileselector_extra_dirs != ''
     let s:source_find = s:source_find_prefix . g:fileselector_extra_dirs . s:source_find_postfix
 else
