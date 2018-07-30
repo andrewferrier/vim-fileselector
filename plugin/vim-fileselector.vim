@@ -3,10 +3,13 @@ if exists('g:loaded_fileselector') || &compatible
 endif
 let g:loaded_fileselector=1
 
-let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | perl -ne 'print if -e substr(\$_, 0, -1);'"
 if !exists('g:fileselector_extra_dirs')
     let g:fileselector_extra_dirs=''
 endif
+
+let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
+
+let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | " . s:existence_check
 let s:source_git = "git ls-files"
 
 if executable('fd')
