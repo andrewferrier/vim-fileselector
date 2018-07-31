@@ -7,7 +7,7 @@ if !exists('g:fileselector_extra_dirs')
     let g:fileselector_extra_dirs=''
 endif
 
-let s:relativeifier = "tr '\\n' '\\0' | xargs -0 realpath"
+let s:relativeifier = "tr '\\n' '\\0' | xargs -0 realpath --relative-base=$HOME | sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
 let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
 
 let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | " . s:existence_check
