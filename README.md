@@ -1,7 +1,7 @@
 # vim-fileselector
 
 This is a vim plugin which allows you to quickly open files from a variety of
-sources. It is similar in spirit to
+sources using [fzf](https://github.com/junegunn/fzf) as a file selector. It is similar in spirit to
 [fzf-z](https://github.com/andrewferrier/fzf-z), but operates on files, not
 directories, and is a vim plugin, not a zsh plugin.
 
