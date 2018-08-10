@@ -27,7 +27,9 @@ else
     let s:source_find = 'true'
 endif
 
-let s:sources = "{ " . s:source_mru . " ; " . s:source_git . " ; " . s:source_find . "; } 2>/dev/null | " . s:relativeifier
+let s:deduplicator = "awk '!seen[$0]++'"
+
+let s:sources = "{ " . s:source_mru . " ; " . s:source_git . " ; " . s:source_find . "; } 2>/dev/null | " . s:deduplicator . " | " . s:relativeifier
 
 let s:preview = "echo {} | sed -e 's^~^$HOME^' | tr '\\n' '\\0' | xargs -0 head -\\$((\\$LINES-2))"
 
