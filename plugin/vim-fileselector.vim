@@ -7,6 +7,10 @@ if !exists('g:fileselector_extra_dirs')
     let g:fileselector_extra_dirs=''
 endif
 
+if !exists('g:fileselector_exclude_pattern')
+    let g:fileselector_exclude_pattern='/.git'
+endif
+
 let s:relativeifier = "tr '\\n' '\\0' | xargs -0 realpath --relative-base=$HOME | sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
 let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
 
@@ -22,7 +26,10 @@ else
 endif
 
 if g:fileselector_extra_dirs != ''
-    let s:source_find = s:source_find_prefix . g:fileselector_extra_dirs . s:source_find_postfix
+    let s:source_find = s:source_find_prefix .
+                \ g:fileselector_extra_dirs .
+                \ s:source_find_postfix .
+                \ " | egrep -v '" . g:fileselector_exclude_pattern . "'"
 else
     let s:source_find = 'true'
 endif
