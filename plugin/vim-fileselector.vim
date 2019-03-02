@@ -11,11 +11,12 @@ if !exists('g:fileselector_exclude_pattern')
     let g:fileselector_exclude_pattern='/.git'
 endif
 
-let s:relativeifier = "tr '\\n' '\\0' | xargs -0 realpath --relative-base=$HOME | sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
+let s:zeroending = "tr '\\n' '\\0'"
+let s:relativeifier = "xargs -0 realpath --relative-base=$HOME | sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
 let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
 
-let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | " . s:existence_check
-let s:source_git = "git ls-files"
+let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | " . s:existence_check . " | " . s:zeroending
+let s:source_git = "git ls-files -z"
 
 if executable('fd')
     let s:source_find_prefix = 'fd --color=never --hidden --size -1m --type file . '
@@ -29,7 +30,7 @@ if g:fileselector_extra_dirs != ''
     let s:source_find = s:source_find_prefix .
                 \ g:fileselector_extra_dirs .
                 \ s:source_find_postfix .
-                \ " | egrep -v '" . g:fileselector_exclude_pattern . "'"
+                \ " | egrep -v '" . g:fileselector_exclude_pattern . "' | " . s:zeroending
 else
     let s:source_find = 'true'
 endif
