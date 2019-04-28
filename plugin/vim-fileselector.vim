@@ -19,7 +19,7 @@ let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | " . s:existence_check . "
 let s:source_git = "git ls-files -z"
 
 if executable('fd')
-    let s:source_find_prefix = 'fd --color=never --hidden --size -1m --type file . '
+    let s:source_find_prefix = 'fd --color=never --hidden --type file . '
     let s:source_find_postfix = ''
 else
     let s:source_find_prefix = 'find '
