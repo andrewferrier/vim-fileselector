@@ -18,7 +18,12 @@ let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
 let s:source_mru = "cat ~/.cache/ctrlp/mru/cache.txt | " . s:existence_check . " | " . s:zeroending
 let s:source_git = "git ls-files -z"
 
-if executable('fd')
+if executable('rg')
+    " From some informal benchmarking I've done, rg seems to be ~50% faster
+    " than fd at this query.
+    let s:source_find_prefix = 'rg --color=never --hidden --files '
+    let s:source_find_postfix = ''
+elseif executable('fd')
     let s:source_find_prefix = 'fd --color=never --hidden --type file . '
     let s:source_find_postfix = ''
 else
