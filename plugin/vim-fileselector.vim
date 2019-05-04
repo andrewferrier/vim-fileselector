@@ -87,11 +87,17 @@ else
     let s:source_find_postfix = ' -type f'
 endif
 
+if executable('gegrep')
+    let s:grep = 'gegrep'
+else
+    let s:grep = 'egrep'
+endif
+
 if g:fileselector_extra_dirs !=# ''
     let s:source_find = s:source_find_prefix .
                 \ g:fileselector_extra_dirs .
                 \ s:source_find_postfix .
-                \ " | egrep -v '" . join(g:fileselector_exclude_pattern, '|') . "' | " . s:zeroending
+                \ ' | ' . s:grep . " -v '" . join(g:fileselector_exclude_pattern, '|') . "' | " . s:zeroending
 else
     let s:source_find = 'true'
 endif

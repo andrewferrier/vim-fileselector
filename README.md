@@ -20,6 +20,15 @@ Once installed, you need to configure a key to open the list, like this:
     nnoremap <silent> <Leader>e :MRUDisplay<CR>
 ```
 
+## Ways of speeding up vim-fileselector
+
+`vim-fileselector` will run faster if
+[ripgrep](https://github.com/BurntSushi/ripgrep),
+[fd](https://github.com/sharkdp/fd) and [GNU
+grep](https://www.gnu.org/software/grep/) are available ([the latter is not
+available by default on OS X](https://apple.stackexchange.com/a/193300)). It
+will autodetect and use these tools if present.
+
 ## Installation
 
 Like [any vim
