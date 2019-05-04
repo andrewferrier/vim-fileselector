@@ -106,7 +106,13 @@ let s:deduplicator = "awk '!seen[$0]++'"
 
 let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_git . ' ; ' . s:source_find . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:deduplicator
 
-let s:preview = "echo {} | sed -e 's^~^$HOME^' | tr '\\n' '\\0' | xargs -0 head -\\$((\\$LINES-2))"
+if executable('highlight')
+    let s:highlight = 'highlight --force --out-format=truecolor | '
+else
+    let s:highlight = ''
+endif
+
+let s:preview = "echo {} | sed -e 's^~^$HOME^' | tr '\\n' '\\0' | xargs -0 " . s:highlight . "head -\\$((\\$LINES-2))"
 
 function! s:MRUDisplay()
     call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
