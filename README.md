@@ -1,9 +1,9 @@
 # vim-fileselector
 
 This is a vim plugin which allows you to quickly open files from a variety of
-sources using [fzf](https://github.com/junegunn/fzf) as a file selector. It is similar in spirit to
-[fzf-z](https://github.com/andrewferrier/fzf-z), but operates on files, not
-directories, and is a vim plugin, not a zsh plugin.
+sources using [fzf](https://github.com/junegunn/fzf) as a file selector. It is
+similar in spirit to [fzf-z](https://github.com/andrewferrier/fzf-z), but
+operates on files, not directories, and is a vim plugin, not a zsh plugin.
 
 Currently it uses three sources:
 
@@ -12,12 +12,12 @@ Currently it uses three sources:
 
 1. `git ls-files` (only works if you are currently inside a git repo).
 
-1. `find` or `fd`.
-
-Once installed, you need to configure a key to open the list, like this:
+1. `find` or `fd` - this is based off all files in a space-separated list of
+   directories you specify in the `g:fileselector_extra_dirs` environment
+   variable. For example:
 
 ```
-    nnoremap <silent> <Leader>e :MRUDisplay<CR>
+   let g:fileselector_extra_dirs = ['~/stuff', '/tmp']
 ```
 
 ## Ways of speeding up vim-fileselector
@@ -33,3 +33,9 @@ will autodetect and use these tools if present.
 
 Like [any vim
 plugin](https://vi.stackexchange.com/questions/613/how-do-i-install-a-plugin-in-vim-vi).
+
+Once installed, you need to configure a key to open the list, like this:
+
+```
+    nnoremap <silent> <Leader>e :MRUDisplay<CR>
+```
