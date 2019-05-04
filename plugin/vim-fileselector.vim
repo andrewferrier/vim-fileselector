@@ -21,19 +21,19 @@ call mkdir(s:mru_file_dir, 'p')
 let s:mru_files = []
 
 function! s:MRU_AddFile(bufnr_filetoadd)
-    let fname = fnamemodify(bufname(a:bufnr_filetoadd + 0), ':p')
-    if fname ==# '' || &buftype !=# ''
+    let l:fname = fnamemodify(bufname(a:bufnr_filetoadd + 0), ':p')
+    if l:fname ==# '' || &buftype !=# ''
         return
     endif
 
     if g:fileselector_exclude_pattern !=# []
-        if fname =~# join(g:fileselector_exclude_pattern, '\|')
+        if l:fname =~# join(g:fileselector_exclude_pattern, '\|')
             return
         endif
     endif
 
-    let idx = index(s:mru_files, fname)
-    if idx == -1 && !filereadable(fname)
+    let l:idx = index(s:mru_files, l:fname)
+    if l:idx == -1 && !filereadable(l:fname)
         return
     endif
 
@@ -48,17 +48,17 @@ function! s:MRU_AddFile(bufnr_filetoadd)
         let s:mru_files = []
     endif
 
-    call filter(s:mru_files, 'v:val !=# fname')
-    call insert(s:mru_files, fname, 0)
+    call filter(s:mru_files, 'v:val !=# l:fname')
+    call insert(s:mru_files, l:fname, 0)
 
     if len(s:mru_files) > s:mru_max_length
         call remove(s:mru_files, s:mru_max_length, -1)
     endif
 
-    let l = []
-    call add(l, '# vim-fileselector - most recently used at the top')
-    call extend(l, s:mru_files)
-    call writefile(l, s:mru_file)
+    let l:newlist = []
+    call add(l:newlist, '# vim-fileselector - most recently used at the top')
+    call extend(l:newlist, s:mru_files)
+    call writefile(l:newlist, s:mru_file)
 endfunction
 
 augroup vim-fileselector
