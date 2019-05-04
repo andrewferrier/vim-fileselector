@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2018 Andrew Ferrier
+Copyright (c) 2019 Andrew Ferrier
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+--
+
+Portions adapted from mru.vim by Yegappan Lakshmanan (yegappan AT yahoo DOT
+com), version 3.9, as found at https://github.com/vim-scripts/mru.vim.
+
+Copyright: Copyright (C) 2003-2015 Yegappan Lakshmanan
+License:   Permission is hereby granted to use and distribute this code,
+           with or without modifications, provided that this copyright
+           notice is copied with it. Like anything else that's free,
+           mru.vim is provided *as is* and comes with no warranty of any
+           kind, either expressed or implied. In no event will the copyright
+           holder be liable for any damages resulting from the use of this
+           software.

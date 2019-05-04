@@ -7,9 +7,8 @@ directories, and is a vim plugin, not a zsh plugin.
 
 Currently it uses three sources:
 
-1. The MRU (most recently used) from the
-   [ctrlp](https://github.com/kien/ctrlp.vim) plugin. You need to have that
-   installed, but you don't have to actively use it.
+1. The MRU (most recently used) files you've used in vim. `vim-fileselector`
+   keeps track of that itself, so you don't need another plugin or list.
 
 1. `git ls-files` (only works if you are currently inside a git repo).
 
