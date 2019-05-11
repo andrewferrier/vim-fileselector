@@ -16,6 +16,8 @@ let s:mru_file_dir = $HOME . '/.cache/vim-fileselector'
 let s:mru_file = s:mru_file_dir . '/mru'
 let s:mru_max_length = 1000
 
+let s:fasd_max_length = 100
+
 call mkdir(s:mru_file_dir, 'p')
 
 let s:mru_files = []
@@ -102,9 +104,15 @@ else
     let s:source_find = 'true'
 endif
 
+if executable('fasd')
+    let s:source_fasd = 'fasd -f -l -R | tail -' . s:fasd_max_length . ' | ' . s:zeroending
+else
+    let s:source_fasd = 'true'
+endif
+
 let s:deduplicator = "awk '!seen[$0]++'"
 
-let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_git . ' ; ' . s:source_find . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:deduplicator
+let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_git . ' ; ' . s:source_find . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:deduplicator
 
 if executable('highlight')
     let s:highlight = 'highlight --force --out-format=truecolor | '
