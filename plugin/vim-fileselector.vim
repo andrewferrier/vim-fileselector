@@ -18,7 +18,10 @@ let s:mru_max_length = 1000
 
 let s:fasd_max_length = 100
 
-call mkdir(s:mru_file_dir, 'p')
+" neovim doesn't need this guard, but vim will fail if the directory exists.
+if !isdirectory(s:mru_file_dir)
+    call mkdir(s:mru_file_dir, 'p')
+endif
 
 let s:mru_files = []
 
