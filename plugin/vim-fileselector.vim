@@ -73,7 +73,8 @@ augroup vim-fileselector
 augroup END
 
 let s:zeroending = "tr '\\n' '\\0'"
-let s:relativeifier = "xargs -0 realpath --relative-base=$HOME | sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
+let s:relativeifier = 'xargs -0 realpath --relative-base=$HOME'
+let s:replace_with_tilde = "sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
 let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
 
 let s:source_mru = 'cat ' . s:mru_file . ' | ' . s:existence_check . ' | ' . s:zeroending
@@ -115,7 +116,7 @@ endif
 
 let s:deduplicator = "awk '!seen[$0]++'"
 
-let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_git . ' ; ' . s:source_find . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:deduplicator
+let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_git . ' ; ' . s:source_find . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:replace_with_tilde . ' | ' . s:deduplicator
 
 if executable('highlight')
     let s:highlight = 'highlight --force --out-format=truecolor | '
@@ -123,7 +124,7 @@ else
     let s:highlight = ''
 endif
 
-let s:preview = "echo {} | sed -e 's^~^$HOME^' | tr '\\n' '\\0' | xargs -0 " . s:highlight . "head -\\$((\\$LINES-2))"
+let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 ' . s:highlight . "head -\\$((\\$LINES-2))"
 
 function! s:MRUDisplay()
     call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
