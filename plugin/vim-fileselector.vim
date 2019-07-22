@@ -81,7 +81,7 @@ let s:source_git = 'git ls-files -z'
 if executable('rg')
     " From some informal benchmarking I've done, rg seems to be ~50% faster
     " than fd at this query.
-    let s:source_find_prefix = 'rg --color=never --hidden --files '
+    let s:source_find_prefix = 'rg --no-config --color=never --hidden --files '
     let s:source_find_postfix = ''
 elseif executable('fd')
     let s:source_find_prefix = 'fd --color=never --hidden --type file . '
