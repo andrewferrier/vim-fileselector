@@ -16,8 +16,6 @@ let s:mru_file_dir = $HOME . '/.cache/vim-fileselector'
 let s:mru_file = s:mru_file_dir . '/mru'
 let s:mru_max_length = 1000
 
-let s:fasd_max_length = 100
-
 " neovim doesn't need this guard, but vim will fail if the directory exists.
 if !isdirectory(s:mru_file_dir)
     call mkdir(s:mru_file_dir, 'p')
@@ -109,7 +107,7 @@ else
 endif
 
 if executable('fasd')
-    let s:source_fasd = 'fasd -f -l -R | tail -' . s:fasd_max_length . ' | ' . s:zeroending
+    let s:source_fasd = 'fasd -f -l -R | ' . s:zeroending
 else
     let s:source_fasd = 'true'
 endif
