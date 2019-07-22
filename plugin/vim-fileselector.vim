@@ -119,12 +119,12 @@ let s:deduplicator = "awk '!seen[$0]++'"
 let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_git . ' ; ' . s:source_find . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:replace_with_tilde . ' | ' . s:deduplicator
 
 if executable('highlight')
-    let s:highlight = 'highlight --force --out-format=truecolor | '
+    let s:highlight = '| highlight --force --out-format=truecolor --syntax-by-name={}'
 else
     let s:highlight = ''
 endif
 
-let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 ' . s:highlight . "head -\\$((\\$LINES-2))"
+let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 -I"%" head -200 % ' . s:highlight
 
 function! s:MRUDisplay()
     call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
