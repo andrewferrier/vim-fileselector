@@ -127,8 +127,14 @@ endif
 
 let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 -I"%" head -200 % ' . s:highlight
 
-function! s:MRUDisplay()
+function! s:FileSelectorDisplay()
     call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
 endfunction
 
-command! -bar MRUDisplay call <SID>MRUDisplay()
+function! s:MRUDisplay()
+    echoerr 'MRUDisplay() is deprecated, please switch to FileSelectorDisplay().'
+    call <SID>FileSelectorDisplay()
+endfunction
+
+command! -bar FileSelectorDisplay call <SID>FileSelectorDisplay()
+command! -bar MRUDisplay          call <SID>MRUDisplay()
