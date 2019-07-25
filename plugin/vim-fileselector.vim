@@ -132,7 +132,7 @@ let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_e
 let s:highlight = ''
 
 if executable('highlight')
-    let s:output =  system('cat /dev/null | highlight --syntax-by-name=c')
+    let s:output =  system('cat /dev/null | highlight --out-format=truecolor --syntax-by-name=c')
 
     if v:shell_error == 0
         let s:highlight = '| highlight --force --out-format=truecolor --syntax-by-name={}'
