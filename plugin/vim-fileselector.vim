@@ -119,10 +119,14 @@ let s:deduplicator = "awk '!seen[$0]++'"
 
 let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_git . ' ; ' . s:source_find . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:replace_with_tilde . ' | ' . s:deduplicator
 
+let s:highlight = ''
+
 if executable('highlight')
-    let s:highlight = '| highlight --force --out-format=truecolor --syntax-by-name={}'
-else
-    let s:highlight = ''
+    let s:output =  system('cat /dev/null | highlight --syntax-by-name=c')
+
+    if v:shell_error == 0
+        let s:highlight = '| highlight --force --out-format=truecolor --syntax-by-name={}'
+    endif
 endif
 
 let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 -I"%" head -200 % ' . s:highlight
