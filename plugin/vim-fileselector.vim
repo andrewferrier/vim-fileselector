@@ -102,7 +102,6 @@ endif
 if executable('locate')
     let s:output =  system('locate -S')
     if v:shell_error != 0
-        echo 'locate not found'
         if g:fileselector_extra_dirs !=# ''
             let s:source_find = s:source_find_prefix .
                         \ g:fileselector_extra_dirs .
