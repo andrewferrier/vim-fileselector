@@ -119,7 +119,7 @@ if executable('locate')
 
         let s:source_extra = s:source_git . ' ; ' . s:source_find
     else
-        let s:source_extra = 'locate / | ' . s:GetExcluder() . ' | ' . s:existence_check . ' | ' . s:zeroending
+        let s:source_extra = 'locate --existing / | ' . s:GetExcluder() . ' | ' . s:zeroending
     endif
 endif
 
