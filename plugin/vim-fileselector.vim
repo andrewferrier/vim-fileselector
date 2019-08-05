@@ -23,7 +23,7 @@ endif
 
 let s:mru_files = []
 
-function! s:MRU_AddFile(bufnr_filetoadd)
+function! s:MRU_AddFile(bufnr_filetoadd) abort
     let l:fname = fnamemodify(bufname(a:bufnr_filetoadd + 0), ':p')
     if l:fname ==# '' || &buftype !=# ''
         return
@@ -99,7 +99,7 @@ else
     let s:grep = 'egrep'
 endif
 
-function! s:GetExcluder()
+function! s:GetExcluder() abort
     return s:grep . " -v '" . join(g:fileselector_exclude_pattern, '|') . "'"
 endfunction
 
@@ -145,11 +145,11 @@ endif
 
 let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 -I"%" head -200 % ' . s:highlight
 
-function! s:FileSelectorDisplay()
+function! s:FileSelectorDisplay() abort
     call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
 endfunction
 
-function! s:MRUDisplay()
+function! s:MRUDisplay() abort
     echoerr 'MRUDisplay() is deprecated, please switch to FileSelectorDisplay().'
     call <SID>FileSelectorDisplay()
 endfunction
