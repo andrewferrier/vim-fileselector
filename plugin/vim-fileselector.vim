@@ -75,7 +75,7 @@ let s:relativeifier = 'xargs -0 realpath --relative-base=$HOME'
 let s:replace_with_tilde = "sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
 let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
 
-let s:source_mru = 'cat ' . s:mru_file . ' | ' . s:existence_check . ' | ' . s:zeroending
+let s:source_mru = 'cat ' . s:mru_file . ' | ' . s:existence_check
 
 " We use --no-ignore here because vim-fileselector may often be used to
 " navigate source code bases; we may want to edit generated files etc.
@@ -110,28 +110,28 @@ if executable('locate')
             let s:source_find = s:source_find_prefix .
                         \ g:fileselector_extra_dirs .
                         \ s:source_find_postfix .
-                        \ ' | ' . s:GetExcluder() . ' | ' . s:zeroending
+                        \ ' | ' . s:GetExcluder()
         else
             let s:source_find = 'true'
         endif
 
-        let s:source_git = 'git ls-files -z'
+        let s:source_git = 'git ls-files'
 
         let s:source_extra = s:source_git . ' ; ' . s:source_find
     else
-        let s:source_extra = 'locate --existing / | ' . s:GetExcluder() . ' | ' . s:zeroending
+        let s:source_extra = 'locate --existing / | ' . s:GetExcluder()
     endif
 endif
 
 if executable('fasd')
-    let s:source_fasd = 'fasd -f -l -R | ' . s:zeroending
+    let s:source_fasd = 'fasd -f -l -R'
 else
     let s:source_fasd = 'true'
 endif
 
 let s:deduplicator = "awk '!seen[$0]++'"
 
-let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_extra . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:replace_with_tilde . ' | ' . s:deduplicator
+let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_extra . '; } 2>/dev/null | ' . s:zeroending . ' | ' . s:relativeifier . ' | ' . s:replace_with_tilde . ' | ' . s:deduplicator
 
 let s:highlight = ''
 
