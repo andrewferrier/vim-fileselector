@@ -16,7 +16,7 @@ Currently it uses three sources:
    directories you specify in the `g:fileselector_extra_dirs` environment
    variable. For example:
 
-```
+``` vim
    let g:fileselector_extra_dirs = ['~/stuff', '/tmp']
 ```
 
@@ -40,6 +40,6 @@ plugin](https://vi.stackexchange.com/questions/613/how-do-i-install-a-plugin-in-
 
 Once installed, you need to configure a key to open the list, like this:
 
-```
-    nnoremap <silent> <Leader>e :MRUDisplay<CR>
+``` vim
+    nnoremap <silent> <Leader>e :FileSelectorDisplay<CR>
 ```
