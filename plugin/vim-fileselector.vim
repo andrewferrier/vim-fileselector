@@ -9,7 +9,7 @@ if !exists('g:fileselector_extra_dirs')
 endif
 
 if !exists('g:fileselector_exclude_pattern')
-    let g:fileselector_exclude_pattern='/.git'
+    let g:fileselector_exclude_pattern=['/.git']
 endif
 
 let s:mru_file_dir = $HOME . '/.cache/vim-fileselector'
