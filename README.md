@@ -33,6 +33,17 @@ grep](https://www.gnu.org/software/grep/) are available ([the latter is not
 available by default on OS X](https://apple.stackexchange.com/a/193300)). It
 will autodetect and use these tools if present.
 
+## Other Configuration Options
+
+You can set patterns for excluded files from being stored in
+`vim-fileselector`'s MRU list:
+
+```vim
+let g:fileselector_exclude_pattern = ['.*\.pdf', '\.DS_Store']
+```
+
+All patterns are ORed together and evaluated using vim's own regex engine.
+
 ## Installation
 
 Like [any vim
