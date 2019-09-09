@@ -24,7 +24,7 @@ If [highlight](https://www.gnu.org/software/src-highlite/) is installed,
 `vim-fileselector` will use it highlight the file contents in the preview
 window. If it's not, it will gracefully degrade to unhighlighted contents.
 
-## Ways of speeding up vim-fileselector
+## Ways of Speeding Up vim-fileselector
 
 `vim-fileselector` will run faster if
 [ripgrep](https://github.com/BurntSushi/ripgrep),
