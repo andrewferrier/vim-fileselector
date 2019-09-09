@@ -27,7 +27,7 @@ window. If it's not, it will gracefully degrade to unhighlighted contents.
 ## Ways of Speeding Up vim-fileselector
 
 `vim-fileselector` will run faster if
-[ripgrep](https://github.com/BurntSushi/ripgrep),
+[ripgrep](https://github.com/BurntSushi/ripgrep) or
 [fd](https://github.com/sharkdp/fd) and [GNU
 grep](https://www.gnu.org/software/grep/) are available ([the latter is not
 available by default on OS X](https://apple.stackexchange.com/a/193300)). It
