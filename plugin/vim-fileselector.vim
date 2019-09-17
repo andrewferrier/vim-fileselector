@@ -103,22 +103,22 @@ function! s:GetExcluder() abort
     return s:grep . " -v '" . join(g:fileselector_exclude_pattern, '|') . "'"
 endfunction
 
+if g:fileselector_extra_dirs !=# ''
+    let s:source_find = s:source_find_prefix .
+                \ g:fileselector_extra_dirs .
+                \ s:source_find_postfix .
+                \ ' | ' . s:GetExcluder() . ' | ' . s:zeroending
+else
+    let s:source_find = 'true'
+endif
+
+let s:source_git = 'git ls-files -z'
+
+let s:source_extra = s:source_git . ' ; ' . s:source_find
+
 if executable('locate')
     let s:output =  system('locate -S')
-    if v:shell_error != 0
-        if g:fileselector_extra_dirs !=# ''
-            let s:source_find = s:source_find_prefix .
-                        \ g:fileselector_extra_dirs .
-                        \ s:source_find_postfix .
-                        \ ' | ' . s:GetExcluder() . ' | ' . s:zeroending
-        else
-            let s:source_find = 'true'
-        endif
-
-        let s:source_git = 'git ls-files -z'
-
-        let s:source_extra = s:source_git . ' ; ' . s:source_find
-    else
+    if v:shell_error == 0
         let s:source_extra = 'locate --existing / | ' . s:GetExcluder() . ' | ' . s:zeroending
     endif
 endif
