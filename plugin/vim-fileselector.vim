@@ -149,10 +149,4 @@ function! s:FileSelectorDisplay() abort
     call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
 endfunction
 
-function! s:MRUDisplay() abort
-    echoerr 'MRUDisplay() is deprecated, please switch to FileSelectorDisplay().'
-    call <SID>FileSelectorDisplay()
-endfunction
-
 command! -bar FileSelectorDisplay call <SID>FileSelectorDisplay()
-command! -bar MRUDisplay          call <SID>MRUDisplay()
