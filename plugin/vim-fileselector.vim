@@ -71,81 +71,89 @@ augroup vim-fileselector
 augroup END
 
 let s:zeroending = "tr '\\n' '\\0'"
-let s:relativeifier = 'xargs -0 realpath --relative-base=$HOME'
-let s:replace_with_tilde = "sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
-let s:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
-
-let s:source_mru = 'cat ' . s:mru_file . ' | ' . s:existence_check . ' | ' . s:zeroending
-
-" We use --no-ignore here because vim-fileselector may often be used to
-" navigate source code bases; we may want to edit generated files etc.
-" which may be gitignored.
-if executable('rg')
-    " From some informal benchmarking I've done, rg seems to be ~50% faster
-    " than fd at this query.
-    let s:source_find_prefix = 'rg --no-config --no-ignore --color=never --hidden --files '
-    let s:source_find_postfix = ''
-elseif executable('fd')
-    let s:source_find_prefix = 'fd --no-ignore --color=never --hidden --type file . '
-    let s:source_find_postfix = ''
-else
-    let s:source_find_prefix = 'find '
-    let s:source_find_postfix = ' -type f'
-endif
-
-if executable('gegrep')
-    let s:grep = 'gegrep'
-else
-    let s:grep = 'egrep'
-endif
 
 function! s:GetExcluder() abort
     return s:grep . " -v '" . join(g:fileselector_exclude_pattern, '|') . "'"
 endfunction
 
-if g:fileselector_extra_dirs !=# ''
-    let s:source_find = s:source_find_prefix .
-                \ g:fileselector_extra_dirs .
-                \ s:source_find_postfix .
-                \ ' | ' . s:GetExcluder() . ' | ' . s:zeroending
-else
-    let s:source_find = 'true'
-endif
+function! s:SetSourcesAndPreview() abort
+    if !exists('s:sources')
+        let l:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
+        let l:relativeifier = 'xargs -0 realpath --relative-base=$HOME'
+        let l:replace_with_tilde = "sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
 
-let s:source_git = 'git ls-files -z'
+        let s:source_mru = 'cat ' . s:mru_file . ' | ' . l:existence_check . ' | ' . s:zeroending
 
-let s:source_extra = s:source_git . ' ; ' . s:source_find
+        " We use --no-ignore here because vim-fileselector may often be used to
+        " navigate source code bases; we may want to edit generated files etc.
+        " which may be gitignored.
+        if executable('rg')
+            " From some informal benchmarking I've done, rg seems to be ~50% faster
+            " than fd at this query.
+            let s:source_find_prefix = 'rg --no-config --no-ignore --color=never --hidden --files '
+            let s:source_find_postfix = ''
+        elseif executable('fd')
+            let s:source_find_prefix = 'fd --no-ignore --color=never --hidden --type file . '
+            let s:source_find_postfix = ''
+        else
+            let s:source_find_prefix = 'find '
+            let s:source_find_postfix = ' -type f'
+        endif
 
-if executable('locate')
-    let s:output =  system('locate -S')
-    if v:shell_error == 0
-        let s:source_extra = 'locate --existing / | ' . s:GetExcluder() . ' | ' . s:zeroending
+        if executable('gegrep')
+            let s:grep = 'gegrep'
+        else
+            let s:grep = 'egrep'
+        endif
+
+        if g:fileselector_extra_dirs !=# ''
+            let s:source_find = s:source_find_prefix .
+                        \ g:fileselector_extra_dirs .
+                        \ s:source_find_postfix .
+                        \ ' | ' . s:GetExcluder() . ' | ' . s:zeroending
+        else
+            let s:source_find = 'true'
+        endif
+
+        let s:source_git = 'git ls-files -z'
+
+        let s:source_extra = s:source_git . ' ; ' . s:source_find
+
+        if executable('locate')
+            let s:output =  system('locate -S')
+            if v:shell_error == 0
+                let s:source_extra = 'locate --existing / | ' . s:GetExcluder() . ' | ' . s:zeroending
+            endif
+        endif
+
+        if executable('fasd')
+            let s:source_fasd = 'fasd -f -l -R | ' . s:zeroending
+        else
+            let s:source_fasd = 'true'
+        endif
+
+        let s:deduplicator = "awk '!seen[$0]++'"
+
+        let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_extra . '; } 2>/dev/null | ' . l:relativeifier . ' | ' . l:replace_with_tilde . ' | ' . s:deduplicator
     endif
-endif
 
-if executable('fasd')
-    let s:source_fasd = 'fasd -f -l -R | ' . s:zeroending
-else
-    let s:source_fasd = 'true'
-endif
+    if !exists('s:preview')
+        let l:highlight = ''
 
-let s:deduplicator = "awk '!seen[$0]++'"
+        if executable('highlight')
+            let l:output =  system('cat /dev/null | highlight --out-format=truecolor --syntax-by-name=c')
 
-let s:sources = '{ ' . s:source_mru . ' ; ' . s:source_fasd . ' ; ' . s:source_extra . '; } 2>/dev/null | ' . s:relativeifier . ' | ' . s:replace_with_tilde . ' | ' . s:deduplicator
+            if v:shell_error == 0
+                let l:highlight = '| highlight --force --out-format=truecolor --syntax-by-name={}'
+            endif
+        endif
 
-let s:highlight = ''
-
-if executable('highlight')
-    let s:output =  system('cat /dev/null | highlight --out-format=truecolor --syntax-by-name=c')
-
-    if v:shell_error == 0
-        let s:highlight = '| highlight --force --out-format=truecolor --syntax-by-name={}'
+        let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 -I"%" head -200 % ' . l:highlight
     endif
-endif
-
-let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 -I"%" head -200 % ' . s:highlight
+endfunction
 
 function! s:FileSelectorDisplay() abort
+    call <SID>SetSourcesAndPreview()
     call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
 endfunction
 
