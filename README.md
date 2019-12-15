@@ -44,6 +44,10 @@ let g:fileselector_exclude_pattern = ['.*\.pdf', '\.DS_Store']
 
 All patterns are ORed together and evaluated using vim's own regex engine.
 
+If you want to override the color scheme used by `highlight`, set for example
+`HIGHLIGHT_OPTIONS="solarized-dark"` in your environment (see `man highlight`
+for more information.
+
 ## Installation
 
 Like [any vim
