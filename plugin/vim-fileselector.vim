@@ -79,7 +79,7 @@ endfunction
 function! s:SetSourcesAndPreview() abort
     if !exists('s:sources')
         let l:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
-        let l:relativeifier = 'xargs -0 realpath --relative-base=$HOME'
+        let l:relativeifier = 'xargs -0 realpath --relative-base=$HOME 2> /dev/null'
         let l:replace_with_tilde = "sed -e 's/^\\([^\\/]\\)/~\\/\\1/'"
 
         let s:source_mru = 'cat ' . s:mru_file . ' | ' . l:existence_check . ' | ' . s:zeroending
