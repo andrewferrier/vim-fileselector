@@ -5,6 +5,22 @@ sources using [fzf](https://github.com/junegunn/fzf) as a file selector. It is
 similar in spirit to [fzf-z](https://github.com/andrewferrier/fzf-z), but
 operates on files, not directories, and is a vim plugin, not a zsh plugin.
 
+## Installation
+
+Ensure you have the [fzf vim plugin](https://github.com/junegunn/fzf.vim)
+installed first.
+
+Then, install this plugin like [any other vim
+plugin](https://vi.stackexchange.com/questions/613/how-do-i-install-a-plugin-in-vim-vi).
+
+Once installed, you need to configure a key to open the list, like this:
+
+``` vim
+    nnoremap <silent> <Leader>e :FileSelectorDisplay<CR>
+```
+
+## Understanding Sources of Files Shown
+
 Currently it uses three sources:
 
 1. The MRU (most recently used) files you've used in vim. `vim-fileselector`
@@ -47,14 +63,3 @@ All patterns are ORed together and evaluated using vim's own regex engine.
 If you want to override the color scheme used by `highlight`, set for example
 `HIGHLIGHT_OPTIONS="solarized-dark"` in your environment (see `man highlight`
 for more information.
-
-## Installation
-
-Like [any vim
-plugin](https://vi.stackexchange.com/questions/613/how-do-i-install-a-plugin-in-vim-vi).
-
-Once installed, you need to configure a key to open the list, like this:
-
-``` vim
-    nnoremap <silent> <Leader>e :FileSelectorDisplay<CR>
-```
