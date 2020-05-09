@@ -76,7 +76,7 @@ function! s:GetExcluder() abort
     return s:grep . " -v '" . join(g:fileselector_exclude_pattern, '|') . "'"
 endfunction
 
-function! s:SetSourcesAndPreview() abort
+function! s:CheckSystemSetup() abort
     if !exists('s:sources')
         let l:existence_check = "perl -ne 'print if -e substr(\$_, 0, -1);'"
         let l:relativeifier = 'xargs -0 realpath --relative-base=$HOME 2> /dev/null'
@@ -150,11 +150,22 @@ function! s:SetSourcesAndPreview() abort
 
         let s:preview = "echo {} | sed -e 's^~^$HOME^' | " . s:zeroending . ' | xargs -0 -I"%" head -200 % ' . l:highlight
     endif
+
+    if !exists('s:fzf_additional_options')
+        let s:output = 'cat /dev/null | fzf --exit-0 --keep-right'
+
+        if v:shell_error == 2
+            " --keep-right doesn't exist in this version of fzf
+            let s:fzf_additional_options = ''
+        else
+            let s:fzf_additional_options = '--keep-right '
+        endif
+    endif
 endfunction
 
 function! s:FileSelectorDisplay() abort
-    call <SID>SetSourcesAndPreview()
-    call fzf#run(fzf#wrap({'source': s:sources, 'options': '--tiebreak=index --preview="' . s:preview . '"'}))
+    call <SID>CheckSystemSetup()
+    call fzf#run(fzf#wrap({'source': s:sources, 'options': s:fzf_additional_options . '--tiebreak=index --preview="' . s:preview . '"'}))
 endfunction
 
 command! -bar FileSelectorDisplay call <SID>FileSelectorDisplay()
