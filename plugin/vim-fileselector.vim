@@ -165,7 +165,7 @@ endfunction
 
 function! s:FileSelectorDisplay() abort
     call <SID>CheckSystemSetup()
-    call fzf#run(fzf#wrap({'source': s:sources, 'options': s:fzf_additional_options . '--tiebreak=index --preview="' . s:preview . '"'}))
+    call fzf#run(fzf#wrap({'source': s:sources, 'options': s:fzf_additional_options . '--tiebreak=index --preview="' . s:preview . '"', 'window': { 'width': 0.9, 'height': 0.8 }}))
 endfunction
 
 command! -bar FileSelectorDisplay call <SID>FileSelectorDisplay()

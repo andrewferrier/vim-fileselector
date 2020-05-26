@@ -5,6 +5,8 @@ sources using [fzf](https://github.com/junegunn/fzf) as a file selector. It is
 similar in spirit to [fzf-z](https://github.com/andrewferrier/fzf-z), but
 operates on files, not directories, and is a vim plugin, not a zsh plugin.
 
+Requires Vim 8+ or NeoVim for pop-up window support.
+
 ## Installation
 
 Ensure you have the [fzf vim plugin](https://github.com/junegunn/fzf.vim)
