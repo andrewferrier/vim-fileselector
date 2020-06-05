@@ -165,7 +165,13 @@ endfunction
 
 function! s:FileSelectorDisplay() abort
     call <SID>CheckSystemSetup()
-    call fzf#run(fzf#wrap({'source': s:sources, 'options': s:fzf_additional_options . '--tiebreak=index --preview="' . s:preview . '"', 'window': { 'width': 0.9, 'height': 0.8 }}))
+    let l:fzf_params = {'source': s:sources, 'options': s:fzf_additional_options . '--tiebreak=index --preview="' . s:preview . '"'}
+
+    if has('nvim')
+        let l:fzf_params.window = { 'width': 0.9, 'height': 0.8 }
+    endif
+
+    call fzf#run(fzf#wrap(l:fzf_params))
 endfunction
 
 command! -bar FileSelectorDisplay call <SID>FileSelectorDisplay()
