@@ -1,5 +1,12 @@
 # vim-fileselector
 
+**Note**: For now I have stopped using this plugin personally, in favour of a
+local and simpler implementation using a shell script. I will continue to consider
+pull reqs for this repo, but otherwise please do not expect much change. If anyone
+is interested in taking it over, please contact me.
+
+--
+
 This is a vim plugin which allows you to quickly open files from a variety of
 sources using [fzf](https://github.com/junegunn/fzf) as a file selector. It is
 similar in spirit to [fzf-z](https://github.com/andrewferrier/fzf-z), but
